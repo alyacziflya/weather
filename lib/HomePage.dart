@@ -15,6 +15,7 @@ import 'package:weather/bloc/CurrentWeatherBloc/bloc.dart';
 import 'package:weather/bloc/ForecastWeatherBloc/bloc.dart';
 import 'package:weather/helpers/DateConverter.dart';
 import 'package:weather/WeatherView.dart';
+import 'package:weather/WeatherHello.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -217,39 +218,49 @@ class _HomepageState extends State<Homepage>{
                                           child: BlocBuilder<FwBloc, FwState>(
                                             builder: (BuildContext context, state) {
                                               if(state is FwCompleted){
-                                                ForcastDaysModel forecastDaysModel = state.forcastDaysModel;
-                                                return Column(
-                                                  children: [
-                                                    Text("Wind speed",style: TextStyle(color: Colors.blueGrey[400],fontSize: 17, fontStyle: FontStyle.italic),),
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(bottom: 20, right: 40, left: 20),
-                                                        child: LineChart(
-                                                          sampleData1(forecastDaysModel),
-                                                          swapAnimationDuration:
-                                                          Duration(milliseconds: 150),
-                                                          // Optional
-                                                          swapAnimationCurve:
-                                                          Curves.linear, // Optional
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Text("Humidity",style: TextStyle(color: Colors.blueGrey[400],fontSize: 17, fontStyle: FontStyle.italic),),
-                                                    Expanded(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(bottom: 20, right: 40, left: 20),
-                                                        child: LineChart(
-                                                          sampleData2(forecastDaysModel),
-                                                          swapAnimationDuration:
-                                                          Duration(milliseconds: 150),
-                                                          // Optional
-                                                          swapAnimationCurve:
-                                                          Curves.linear, // Optional
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
+                                                ForcastDaysModel forcastDaysModel = state.forcastDaysModel;
+                                                List<Daily> mainDaily = forcastDaysModel.daily!;
+                                                return ListView.builder(
+                                                    shrinkWrap: true,
+                                                 //   scrollDirection: Axis.horizontal,
+                                                    itemCount: 8,
+                                                    itemBuilder:
+                                                        (BuildContext context, int index) {
+                                                      return DaysWeatherView1(daily: mainDaily[index]);
+                                                    });
+                                                // ForcastDaysModel forecastDaysModel = state.forcastDaysModel;
+                                                // return Column(
+                                                //   children: [
+                                                //     Text("This week",style: TextStyle(color: Colors.blueGrey[400],fontSize: 17, fontStyle: FontStyle.italic),),
+                                                //     Expanded(
+                                                //       child: Padding(
+                                                //         padding: const EdgeInsets.only(bottom: 20, right: 40, left: 20),
+                                                //         child: LineChart(
+                                                //           sampleData1(forecastDaysModel),
+                                                //           swapAnimationDuration:
+                                                //           Duration(milliseconds: 150),
+                                                //           // Optional
+                                                //           swapAnimationCurve:
+                                                //           Curves.linear, // Optional
+                                                //         ),
+                                                //       ),
+                                                //     ),
+                                                //     Text("Humidity",style: TextStyle(color: Colors.blueGrey[400],fontSize: 17, fontStyle: FontStyle.italic),),
+                                                //     Expanded(
+                                                //       child: Padding(
+                                                //         padding: const EdgeInsets.only(bottom: 20, right: 40, left: 20),
+                                                //         child: LineChart(
+                                                //           sampleData2(forecastDaysModel),
+                                                //           swapAnimationDuration:
+                                                //           Duration(milliseconds: 150),
+                                                //           // Optional
+                                                //           swapAnimationCurve:
+                                                //           Curves.linear, // Optional
+                                                //         ),
+                                                //       ),
+                                                //     ),
+                                                //   ],
+                                                // );
                                               }else if(state is FwError){
                                                 return Center(child: Text(state.message!));
                                               }else{
@@ -442,7 +453,7 @@ class _HomepageState extends State<Homepage>{
           showTitles: true,
           getTextStyles: (value, d) => const TextStyle(
             color: Colors.blueGrey,
-         //   fontWeight: FontWeight.bold,
+            //   fontWeight: FontWeight.bold,
             fontSize: 12,
           ),
           getTitles: (value) {
