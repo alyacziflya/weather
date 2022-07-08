@@ -215,6 +215,7 @@ class _HomepageState extends State<Homepage>{
                                         child: Container(
                                           width: double.infinity,
                                           height: 2500,
+                                          alignment: Alignment.center,
                                           child: BlocBuilder<FwBloc, FwState>(
                                             builder: (BuildContext context, state) {
                                               if(state is FwCompleted){

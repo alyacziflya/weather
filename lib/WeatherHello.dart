@@ -24,7 +24,7 @@ class _DaysWeatherViewState extends State<DaysWeatherView1> with SingleTickerPro
     animation = Tween(
       begin: -1.0,
       end: 0.0,
-    ).animate(CurvedAnimation(parent: animationController, curve: Interval(0.7, 0.5,curve: Curves.decelerate)));
+    ).animate(CurvedAnimation(parent: animationController, curve: Interval(1, 0.5,curve: Curves.decelerate)));
     animationController.forward();
   }
 
@@ -36,12 +36,6 @@ class _DaysWeatherViewState extends State<DaysWeatherView1> with SingleTickerPro
     return AnimatedBuilder(
       animation: animationController,
       builder: (context,child){
-      return SizedBox(
-          height: 45,
-          child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: 1,
-            itemBuilder: (BuildContext context, index) {
               return Center(
                   child: Container(
                     child:
@@ -51,7 +45,7 @@ class _DaysWeatherViewState extends State<DaysWeatherView1> with SingleTickerPro
                           child: Row(
                             children: [
                               Container(
-                                alignment: Alignment.bottomLeft,
+                                alignment: Alignment.bottomRight,
                                 height: 30,
                                 width: widget.daily.humidity!.toDouble() * 1.5,
                                 color: Colors.blueGrey[400],
@@ -63,12 +57,19 @@ class _DaysWeatherViewState extends State<DaysWeatherView1> with SingleTickerPro
                                     ),),
                                 ),
                               ),
-                              Image(image: NetworkImage('http://openweathermap.org/img/wn/${widget.daily.weather![0].icon}@2x.png', scale: 1.5),),
-                              Text(DateConverter.changeDtToDateTime(widget.daily.dt).toString(),
-                                  style: TextStyle(fontSize: 14, color: Colors.black)),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 5.0),
+                                child: Image(image: NetworkImage('http://openweathermap.org/img/wn/${widget.daily.weather![0].icon}@2x.png', scale: 1.5),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5.0),
+                                child:  Text(DateConverter.changeDtToDateTime(widget.daily.dt).toString(),
+                                    style: TextStyle(fontSize: 14, color: Colors.black)),
+                                ),
                               const SizedBox(width: 10),
                               Container(
-                                alignment: Alignment.bottomRight,
+                                alignment: Alignment.centerLeft,
                                 height: 30,
                                 width: 50,
                                 color: Colors.orangeAccent,
@@ -100,9 +101,6 @@ class _DaysWeatherViewState extends State<DaysWeatherView1> with SingleTickerPro
                     ),
                   ));
             },
-          )
-      );
-    },
     );
   }
 
